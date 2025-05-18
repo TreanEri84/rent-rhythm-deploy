@@ -112,43 +112,41 @@ export default function Navbar() {
   );
 }
 
-// src/App.jsx
-import React, { useState, useEffect } from 'react';
-import Navbar from '@/components/Navbar';
-import { ThemeProvider } from '@/context/ThemeContext';
-import { DarkModeProvider } from '@/context/DarkModeContext';
-import { CurrencyProvider } from '@/context/CurrencyContext';
+// src/components/ThemeDisplay.jsx
+import React from 'react';
+import { useTheme } from '@/context/ThemeContext';
 
-function App() {
-  const [userName, setUserName] = useState('');
+export default function ThemeDisplay() {
+  const { theme } = useTheme();
 
-  useEffect(() => {
-    const storedName = localStorage.getItem('userName');
-    if (storedName) setUserName(storedName);
-    else {
-      const name = prompt('What’s your first name?');
-      if (name) {
-        setUserName(name);
-        localStorage.setItem('userName', name);
-      }
-    }
-  }, []);
+  const mascots = {
+    adventure: { bg: '/adventure.png', mascot: '/fox.png', message: 'Let’s go on an adventure!' },
+    forest: { bg: '/forest.png', mascot: '/squirrel.png', message: 'Time to gather and grow!' },
+    city: { bg: '/city.png', mascot: '/pigeon.png', message: 'Fly smart through your finances!' }
+  };
 
   return (
-    <DarkModeProvider>
-      <ThemeProvider>
-        <CurrencyProvider>
-          <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
-            <Navbar />
-            <main className="p-4">
-              <h2 className="text-2xl font-semibold mb-4">Hi {userName} 👋</h2>
-              {/* Visual Progress, Budget Calculator, and Animation Area will be rendered here */}
-            </main>
-          </div>
-        </CurrencyProvider>
-      </ThemeProvider>
-    </DarkModeProvider>
+    <div className="mt-4 flex flex-col items-center">
+      <img
+        src={mascots[theme].bg}
+        alt="Theme background"
+        className="w-full max-w-xl rounded-xl shadow-md mb-4"
+      />
+      <div className="text-center">
+        <img
+          src={mascots[theme].mascot}
+          alt="Mascot"
+          className="w-24 h-24 mx-auto animate-bounce"
+        />
+        <p className="text-sm mt-1 italic">{mascots[theme].message}</p>
+      </div>
+    </div>
   );
-}
+} // updated with animated mascot
 
-export default App;
+// src/components/ProgressFeedback.jsx (unchanged)
+// src/components/CategoryTracker.jsx (unchanged)
+// src/components/TotalBudgetSummary.jsx (unchanged)
+// src/App.jsx (unchanged)
+
+// Images required: /fox.png, /squirrel.png, /pigeon.png in public folder
