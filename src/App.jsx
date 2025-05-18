@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Navbar from './components/Navbar';
-import ThemeDisplay from './components/ThemeDisplay';
-import { Progress } from './components/ui/progress';
-import { Button } from './components/ui/button';
+import Navbar from './components/Navbar.jsx';
+import ThemeDisplay from './components/ThemeDisplay.jsx';
+import { Progress } from './components/ui/progress.jsx';
+import { Button } from './components/ui/button.jsx';
 
 const RENT_GOAL = 1500; // example goal
 const BUFFER = 200;
