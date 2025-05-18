@@ -7,9 +7,7 @@ export const useTheme = () => useContext(ThemeContext);
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState('adventure');
 
-  const toggleTheme = (newTheme) => {
-    setTheme(newTheme);
-  };
+  const toggleTheme = (newTheme) => setTheme(newTheme);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
