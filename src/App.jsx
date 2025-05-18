@@ -3,14 +3,16 @@ import { Card, CardContent } from "./components/ui/card";
 import { Button } from "./components/ui/button";
 import { Progress } from "./components/ui/progress";
 import { Input } from "./components/ui/input";
+import Navbar from "./components/Navbar";
+import ThemeDisplay from "./components/ThemeDisplay";
 
-export default function RentRhythmApp() {
+export default function App() {
   const [rentAmount, setRentAmount] = useState(1200);
   const [amountSaved, setAmountSaved] = useState(0);
   const [bufferFund, setBufferFund] = useState(100);
   const [rewardVisible, setRewardVisible] = useState(false);
 
-  const percentage = Math.min((amountSaved / rentAmount) * 100, 100);
+  const percentage = Math.min(((amountSaved / (rentAmount + bufferFund)) * 100), 100);
 
   const handleTopUp = () => {
     setAmountSaved((prev) => prev + 100);
@@ -23,35 +25,40 @@ export default function RentRhythmApp() {
   }, [amountSaved, rentAmount, bufferFund]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gray-100 p-4">
-      <Card className="w-full max-w-md">
-        <CardContent className="space-y-6">
-          <h1 className="text-2xl font-bold text-center">🏠 Rent Rhythm</h1>
-          <Progress value={percentage} />
-          <div className="text-center">
-            <p>Saved: ${amountSaved}</p>
-            <p>Target: ${rentAmount} + ${bufferFund} buffer</p>
-          </div>
-          <Button onClick={handleTopUp}>Top up $100</Button>
-          <Input
-            type="number"
-            value={rentAmount}
-            onChange={(e) => setRentAmount(Number(e.target.value))}
-            placeholder="Set Rent Amount"
-          />
-          <Input
-            type="number"
-            value={bufferFund}
-            onChange={(e) => setBufferFund(Number(e.target.value))}
-            placeholder="Set Buffer Amount"
-          />
-          {rewardVisible && (
-            <div className="text-green-600 font-semibold text-center">
-              🎉 You’ve saved enough for rent + buffer!
+    <main className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
+      <Navbar />
+      <ThemeDisplay />
+
+      <section className="flex flex-col items-center justify-center px-4 py-6">
+        <Card className="w-full max-w-md">
+          <CardContent className="space-y-6">
+            <h1 className="text-2xl font-bold text-center">🏠 Rent Rhythm</h1>
+            <Progress value={percentage} />
+            <div className="text-center">
+              <p>Saved: ${amountSaved}</p>
+              <p>Target: ${rentAmount} + ${bufferFund} buffer</p>
             </div>
-          )}
-        </CardContent>
-      </Card>
+            <Button onClick={handleTopUp}>Top up $100</Button>
+            <Input
+              type="number"
+              value={rentAmount}
+              onChange={(e) => setRentAmount(Number(e.target.value))}
+              placeholder="Set Rent Amount"
+            />
+            <Input
+              type="number"
+              value={bufferFund}
+              onChange={(e) => setBufferFund(Number(e.target.value))}
+              placeholder="Set Buffer Amount"
+            />
+            {rewardVisible && (
+              <div className="text-green-500 font-semibold text-center">
+                🎉 You’ve saved enough for rent + buffer!
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </section>
     </main>
   );
 }
