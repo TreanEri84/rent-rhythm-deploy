@@ -1,3 +1,4 @@
+// jsconfig.json
 {
   "compilerOptions": {
     "baseUrl": "src",
@@ -6,3 +7,148 @@
     }
   }
 }
+
+// src/context/ThemeContext.jsx
+import React, { createContext, useContext, useState } from 'react';
+
+const ThemeContext = createContext();
+
+export const useTheme = () => useContext(ThemeContext);
+
+export const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useState('adventure');
+  const toggleTheme = (newTheme) => setTheme(newTheme);
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+// src/context/DarkModeContext.jsx
+import React, { createContext, useContext, useState, useEffect } from 'react';
+
+const DarkModeContext = createContext();
+
+export const useDarkMode = () => useContext(DarkModeContext);
+
+export const DarkModeProvider = ({ children }) => {
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem('darkMode') === 'true';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('darkMode', darkMode);
+    document.documentElement.classList.toggle('dark', darkMode);
+  }, [darkMode]);
+
+  return (
+    <DarkModeContext.Provider value={{ darkMode, setDarkMode }}>
+      {children}
+    </DarkModeContext.Provider>
+  );
+};
+
+// src/context/CurrencyContext.jsx
+import React, { createContext, useContext, useState } from 'react';
+
+const CurrencyContext = createContext();
+
+export const useCurrency = () => useContext(CurrencyContext);
+
+export const CurrencyProvider = ({ children }) => {
+  const [currency, setCurrency] = useState('USD');
+  return (
+    <CurrencyContext.Provider value={{ currency, setCurrency }}>
+      {children}
+    </CurrencyContext.Provider>
+  );
+};
+
+// src/components/Navbar.jsx
+import React from 'react';
+import { useTheme } from '@/context/ThemeContext';
+import { useDarkMode } from '@/context/DarkModeContext';
+import { useCurrency } from '@/context/CurrencyContext';
+
+export default function Navbar() {
+  const { theme, toggleTheme } = useTheme();
+  const { darkMode, setDarkMode } = useDarkMode();
+  const { currency, setCurrency } = useCurrency();
+
+  return (
+    <nav className="flex justify-between items-center p-4 bg-white dark:bg-gray-800 shadow">
+      <h1 className="text-xl font-bold">🏠 Rent Rhythm</h1>
+      <div className="flex gap-4 items-center">
+        <select
+          value={theme}
+          onChange={(e) => toggleTheme(e.target.value)}
+          className="p-1 rounded"
+        >
+          <option value="adventure">Adventure</option>
+          <option value="forest">Forest</option>
+          <option value="city">City</option>
+        </select>
+
+        <select
+          value={currency}
+          onChange={(e) => setCurrency(e.target.value)}
+          className="p-1 rounded"
+        >
+          <option value="USD">$ USD</option>
+          <option value="GBP">£ GBP</option>
+          <option value="EUR">€ EUR</option>
+        </select>
+
+        <button
+          onClick={() => setDarkMode(!darkMode)}
+          className="p-1 text-lg"
+        >
+          {darkMode ? '☀️' : '🌙'}
+        </button>
+      </div>
+    </nav>
+  );
+}
+
+// src/App.jsx
+import React, { useState, useEffect } from 'react';
+import Navbar from '@/components/Navbar';
+import { ThemeProvider } from '@/context/ThemeContext';
+import { DarkModeProvider } from '@/context/DarkModeContext';
+import { CurrencyProvider } from '@/context/CurrencyContext';
+
+function App() {
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const storedName = localStorage.getItem('userName');
+    if (storedName) setUserName(storedName);
+    else {
+      const name = prompt('What’s your first name?');
+      if (name) {
+        setUserName(name);
+        localStorage.setItem('userName', name);
+      }
+    }
+  }, []);
+
+  return (
+    <DarkModeProvider>
+      <ThemeProvider>
+        <CurrencyProvider>
+          <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
+            <Navbar />
+            <main className="p-4">
+              <h2 className="text-2xl font-semibold mb-4">Hi {userName} 👋</h2>
+              {/* Visual Progress, Budget Calculator, and Animation Area will be rendered here */}
+            </main>
+          </div>
+        </CurrencyProvider>
+      </ThemeProvider>
+    </DarkModeProvider>
+  );
+}
+
+export default App;
