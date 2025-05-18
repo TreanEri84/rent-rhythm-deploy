@@ -1,7 +1,7 @@
 import React from 'react';
-import { useTheme } from '@/context/ThemeContext';
-import { useDarkMode } from '@/context/DarkModeContext';
-import { useCurrency } from '@/context/CurrencyContext';
+import { useTheme } from '../context/ThemeContext';
+import { useDarkMode } from '../context/DarkModeContext';
+import { useCurrency } from '../context/CurrencyContext';
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
