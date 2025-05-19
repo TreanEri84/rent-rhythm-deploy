@@ -12,6 +12,10 @@ export default function App() {
   const [goal, setGoal] = useState(1200); // or pull from props/config
   const [theme, setTheme] = useState("fox"); // "fox", "squirrel", or "pigeon" 
   const [showCelebration, setShowCelebration] = useState(false);
+  const [milestones, setMilestones] = useState([
+  // Example initial milestone
+  // { label: "Deposit Paid", amount: 600, date: "2025-06-01", reached: false }
+]);
   
 
   const topUp = (amount) => {
