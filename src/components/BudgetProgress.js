@@ -1,8 +1,6 @@
 import React from "react";
-import { useBudget } from "../contexts/BudgetContext";
 
-export default function BudgetProgress() {
-  const { savings, goal } = useBudget();
+export default function BudgetProgress({ savings, goal }) {
   const percent = Math.min((savings / goal) * 100, 100);
 
   return (
