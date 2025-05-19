@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { useBudget } from "../contexts/BudgetContext";
 
-export default function TopUpButton() {
+export default function TopUpButton({ topUp }) {
   const [amount, setAmount] = useState("");
-  const { topUp } = useBudget();
 
   const handleTopUp = () => {
     const amt = parseFloat(amount);
