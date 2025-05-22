@@ -1,7 +1,10 @@
 import React from "react";
 
 export default function BudgetProgress({ savings, goal }) {
-  const percent = Math.min((savings / goal) * 100, 100);
+  const percent = Math.min(
+    (Number(savings || 0) / Number(goal || 1)) * 100,
+    100
+  );
 
   return (
     <div style={{ margin: "1rem 0" }}>
@@ -26,7 +29,7 @@ export default function BudgetProgress({ savings, goal }) {
         />
       </div>
       <div style={{ fontWeight: "bold" }}>
-        ${savings.toLocaleString()} / ${goal.toLocaleString()} saved
+        ${typeof savings === "number" ? savings.toLocaleString() : (Number(savings) || 0).toLocaleString()} / ${typeof goal === "number" ? goal.toLocaleString() : (Number(goal) || 0).toLocaleString()} saved
       </div>
     </div>
   );
