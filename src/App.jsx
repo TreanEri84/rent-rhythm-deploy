@@ -15,26 +15,28 @@ export default function App() {
   const [theme, setTheme] = useState("fox"); // "fox", "squirrel", or "pigeon" 
   const [showCelebration, setShowCelebration] = useState(false);
   const [milestones, setMilestones] = useState([]);
- 
-  // Example initial milestone
-  // { label: "Deposit Paid", amount: 600, date: "2025-06-01", reached: false 
-  
 
+  // Add savings to total and check for celebration
   const topUp = (amount) => {
     const newSavings = savings + amount;
     setSavings(newSavings);
     if (newSavings >= goal) setShowCelebration(true);
   };
 
+  // Reset celebration modal
   const resetCelebration = () => setShowCelebration(false);
+
+  // Add milestone to the list
   const handleAddMilestone = (milestone) => setMilestones([...milestones, milestone]);
+
+  // Mark a milestone as reached
   const handleMarkReached = (idx) => {
-    setMilestones(milestones =>
+    setMilestones((milestones) =>
       milestones.map((m, i) =>
         i === idx ? { ...m, reached: true } : m
-    )
-  );
-};
+      )
+    );
+  };
 
   return (
     <div style={{ maxWidth: 480, margin: "2rem auto", padding: 24 }}>
@@ -43,7 +45,12 @@ export default function App() {
       <MascotDisplay theme={theme} />
       <BudgetProgress savings={savings} goal={goal} />
       <TopUpButton topUp={topUp} />
-      {/* ...other sections */}
+      <MilestoneForm onAdd={handleAddMilestone} />
+      <MilestoneList
+        milestones={milestones}
+        savings={savings}
+        onMarkReached={handleMarkReached}
+      />
       <CelebrationMessage
         show={showCelebration}
         resetCelebration={resetCelebration}
