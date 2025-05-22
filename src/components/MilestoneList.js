@@ -5,6 +5,11 @@ export default function MilestoneList({ milestones, savings, onMarkReached }) {
     <div style={{ marginTop: "2rem" }}>
       <h2>Milestones</h2>
       <ul style={{ listStyle: "none", padding: 0 }}>
+        {milestones.length === 0 && (
+          <li style={{ color: "#888", fontStyle: "italic", padding: "0.5rem" }}>
+            No milestones yet. Add one above!
+          </li>
+        )}
         {milestones.map((m, idx) => (
           <li
             key={idx}
@@ -17,6 +22,7 @@ export default function MilestoneList({ milestones, savings, onMarkReached }) {
               justifyContent: "space-between",
               alignItems: "center"
             }}
+            aria-label={`Milestone ${m.label}${m.reached ? " (reached)" : ""}`}
           >
             <div>
               <div style={{ fontWeight: "bold" }}>{m.label}</div>
@@ -38,12 +44,15 @@ export default function MilestoneList({ milestones, savings, onMarkReached }) {
                   padding: "0.5rem 1rem",
                   cursor: "pointer"
                 }}
+                aria-label={`Mark ${m.label} as reached`}
               >
                 Mark as Reached
               </button>
             )}
             {m.reached && (
-              <span style={{ color: "#388e3c", fontWeight: "bold" }}>✓ Reached</span>
+              <span style={{ color: "#388e3c", fontWeight: "bold" }} aria-label="Reached milestone">
+                ✓ Reached
+              </span>
             )}
           </li>
         ))}
